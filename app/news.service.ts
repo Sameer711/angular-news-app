@@ -1,23 +1,24 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
-import {Post } from './post';
+import { Post } from './post';
 
 @Injectable()
 export class NewsService {
-   url: "http://jsonplaceholder.typicode.com/comments"
-    constructor(private http: Http) {}
+    private serviceUrl = "http://jsonplaceholder.typicode.com/comments";
+    constructor(private http: Http) {
+        console.info('News Service Constructor initialized');
+    }
     
-    getNews() : Observable<Post[]> {
-      return this.http.get(this.url)
-      .map(this.extractData)
-      ;
-      
+    getPosts() : Observable<Post[]> {
+      return this.http.get(this.serviceUrl)
+       .map(this.extractData)
+      .catch(this.handleError);
     }
     
     private extractData(res: Response) {
         let body = res.json();
-        return body.data || { };
+        return body || { };
     }
     
     private handleError (error: any) {

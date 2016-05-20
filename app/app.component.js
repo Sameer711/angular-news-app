@@ -10,17 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+var post_list_component_1 = require("./post-list.component");
 var AppComponent = (function () {
     function AppComponent() {
-        this.name = "blah";
-        this.Names = ["a", "b", "c", "d"];
-        console.info('Angular3 Component Mounted Successfully');
+        console.info('AppComponent Mounted Successfully');
     }
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
             providers: [http_1.HTTP_PROVIDERS],
-            templateUrl: 'app/angular-3.html'
+            templateUrl: 'app/app.component.html',
+            directives: [post_list_component_1.PostListComponent]
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

@@ -14,14 +14,17 @@ var Observable_1 = require('rxjs/Observable');
 var NewsService = (function () {
     function NewsService(http) {
         this.http = http;
+        this.serviceUrl = "http://jsonplaceholder.typicode.com/comments";
+        console.info('News Service Constructor initialized');
     }
-    NewsService.prototype.getNews = function () {
-        return this.http.get(this.url)
-            .map(this.extractData);
+    NewsService.prototype.getPosts = function () {
+        return this.http.get(this.serviceUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
     };
     NewsService.prototype.extractData = function (res) {
         var body = res.json();
-        return body.data || {};
+        return body || {};
     };
     NewsService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure

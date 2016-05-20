@@ -1,7 +1,8 @@
 export class Post {
-    PostId: number;
-    Name: string;
-    Email: string;
-    Body: string;
+    postId: number;
+    id: number;
+    name: string;
+    email: string;
+    body: string;
     
 }

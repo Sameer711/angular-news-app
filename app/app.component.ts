@@ -1,17 +1,17 @@
 import {Component} from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
-import { NewsService} from './news.service';
+import { Post } from "./post";
+import { PostListComponent } from "./post-list.component";
 
 @Component({
     selector: 'my-app',  
     providers: [ HTTP_PROVIDERS ],
-    templateUrl: 'app/angular-3.html'
+    templateUrl: 'app/app.component.html',
+    directives: [PostListComponent]
 })
 
 export class AppComponent {
-name = "blah";
-  Names = ["a", "b", "c", "d"];
   constructor() {
-    console.info('Angular3 Component Mounted Successfully');
+    console.info('AppComponent Mounted Successfully');
   }
 }
