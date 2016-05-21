@@ -1,8 +1,22 @@
-Posts go here
+<!--Posts go here
 <div>
-    <ul>
-        <li *ngFor="let post of posts">
-        {{post.id }} {{ post.body }} {{post.name}} {{post.email}}
-        </li>
-    </ul>
+    <table class="table table-striped">
+        <tr *ngFor="let post of posts">
+            <td>{{post.id }}</td>
+            <td> {{ post.body }}</td> 
+            <td>{{post.name}}</td>
+            <td>{{post.email}}</td>
+        </tr>
+    </table>
+</div>-->
+
+<div>
+        <table class="table table-striped">
+            <tr *ngFor="let post of entries"  [innerHtml]="post.content">
+            <h2>{{ post.title }}</h2>
+            
+                <span *ngFor="let category of post.categories" class="btn btn-default">{{category}}</span>
+            
+            </tr> 
+        </table>
 </div>

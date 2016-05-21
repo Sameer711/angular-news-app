@@ -20,7 +20,7 @@ var PostListComponent = (function () {
     PostListComponent.prototype.getPosts = function () {
         var _this = this;
         this.newsService.getPosts()
-            .subscribe(function (data) { _this.posts = data; }, function (error) { console.log(error); }, function () { return console.log('done'); });
+            .subscribe(function (data) { _this.entries = data; }, function (error) { console.log(error); }, function () { return console.log('done'); });
     };
     PostListComponent = __decorate([
         core_1.Component({

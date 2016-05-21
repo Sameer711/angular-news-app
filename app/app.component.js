@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+// import { Post } from "./post";
 var post_list_component_1 = require("./post-list.component");
 var AppComponent = (function () {
     function AppComponent() {

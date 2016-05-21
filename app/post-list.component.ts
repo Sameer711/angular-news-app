@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
 import { NewsService} from './news.service';
-import { Post } from "./post";
+import { Entry } from "./entities";
 
 @Component({
     selector: 'post-list',  
@@ -14,12 +14,12 @@ export class PostListComponent implements OnInit {
   
   errorMessage: string;
   mode = 'Observable'; 
-  posts: Post[];
+  entries: Entry[];
   constructor(private newsService: NewsService) {}
   getPosts() {
       this.newsService.getPosts()
         .subscribe(
-            data => { this.posts = data },
+            data => { this.entries = data },
             error => { console.log(error) } ,
             () => console.log('done')
        );            

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
-import { Post } from "./post";
+// import { Post } from "./post";
 import { PostListComponent } from "./post-list.component";
 
 @Component({

@@ -1,1 +1,1 @@
-# angular-3
+# A newsfeed reader in AngularJS

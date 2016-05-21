@@ -14,7 +14,8 @@ var Observable_1 = require('rxjs/Observable');
 var NewsService = (function () {
     function NewsService(http) {
         this.http = http;
-        this.serviceUrl = "http://jsonplaceholder.typicode.com/comments";
+        // private serviceUrl = "http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
+        this.serviceUrl = "/feed/google-news.js";
         console.info('News Service Constructor initialized');
     }
     NewsService.prototype.getPosts = function () {
@@ -24,7 +25,7 @@ var NewsService = (function () {
     };
     NewsService.prototype.extractData = function (res) {
         var body = res.json();
-        return body || {};
+        return body.responseData.feed.entries || {};
     };
     NewsService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure

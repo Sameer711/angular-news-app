@@ -1,16 +1,17 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
-import { Post } from './post';
+import { Entry } from './entities';
 
 @Injectable()
 export class NewsService {
-    private serviceUrl = "http://jsonplaceholder.typicode.com/comments";
+    // private serviceUrl = "http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
+    private serviceUrl = "/feed/google-news.js";
     constructor(private http: Http) {
         console.info('News Service Constructor initialized');
     }
     
-    getPosts() : Observable<Post[]> {
+    getPosts() : Observable<Entry[]> {
       return this.http.get(this.serviceUrl)
        .map(this.extractData)
       .catch(this.handleError);
@@ -18,7 +19,7 @@ export class NewsService {
     
     private extractData(res: Response) {
         let body = res.json();
-        return body || { };
+        return body.responseData.feed.entries || { };
     }
     
     private handleError (error: any) {
