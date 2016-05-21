@@ -5,7 +5,7 @@ import { Entry } from './entities';
 
 @Injectable()
 export class NewsService {
-    private serviceUrl = "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
+    private serviceUrl = "https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
     // private serviceUrl = "/feed/google-news.js";
     constructor(private http: Http) {
         console.info('News Service Constructor initialized');
