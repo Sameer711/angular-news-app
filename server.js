@@ -1,5 +1,6 @@
 var express = require('express')
 var app = express()
+var request = require('request');
  
 app.set('port', (process.env.PORT || 5000));
 
@@ -23,7 +24,6 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/feed/google-news', function(req, res, next) {
-  var request = require('request');
   var clientip = req.headers['x-forwarded-for'] || 
      req.connection.remoteAddress || 
      req.socket.remoteAddress ||
