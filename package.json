@@ -1,5 +1,5 @@
 {
-  "name": "angular3",
+  "name": "angular-news-app",
   "version": "1.0.0",
   "description": "QuickStart package.json from the documentation, supplemented with testing support",
   "scripts": {
@@ -9,7 +9,7 @@
     "e2e": "tsc && concurrently \"http-server\" \"protractor protractor.config.js\"",
     "lint": "tslint ./app/**/*.ts -t verbose",
     "lite": "lite-server",
-    "postinstall": "typings install",
+    "postinstall": "",
     "test": "tsc && concurrently \"tsc -w\" \"karma start karma.conf.js\"",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
