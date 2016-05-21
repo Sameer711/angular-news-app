@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var news_service_1 = require('./news.service');
+var derp_pipe_1 = require("./derp.pipe");
 var PostListComponent = (function () {
     function PostListComponent(newsService) {
         this.newsService = newsService;
@@ -26,7 +27,8 @@ var PostListComponent = (function () {
         core_1.Component({
             selector: 'post-list',
             providers: [http_1.HTTP_PROVIDERS, news_service_1.NewsService],
-            templateUrl: 'post-list.component.html'
+            templateUrl: 'post-list.component.html',
+            pipes: [derp_pipe_1.DerpPipe]
         }), 
         __metadata('design:paramtypes', [news_service_1.NewsService])
     ], PostListComponent);

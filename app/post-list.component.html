@@ -11,12 +11,11 @@
 </div>-->
 
 <div>
-        <table class="table table-striped">
-            <tr *ngFor="let post of entries">
-            <h2>{{ post.title }}</h2>
-            <span   [innerHtml]="post.content"></span>
-                <span *ngFor="let category of post.categories" class="btn btn-default">{{category}}</span>
-            
-            </tr> 
-        </table>
+    <div *ngFor="let post of entries">
+        <h2>{{ post.title }}</h2>
+        <div [innerHtml]="post.description">                        
+        </div>
+        <span *ngFor="let cat of post.category | derp" class="btn btn-info">{{cat}}</span>            
+    </div>
+    
 </div>

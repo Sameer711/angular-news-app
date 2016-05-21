@@ -2,16 +2,17 @@ import { Injectable } from "@angular/core";
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import { Entry } from './entities';
+import { NewsItem } from './entities/feed/news';
 
 @Injectable()
 export class NewsService {
-    private serviceUrl = "/feed/google-news";
+    private serviceUrl = "/feed/toJson?url=http://www.680news.com/feed/";
     // private serviceUrl = "/feed/google-news.js";
     constructor(private http: Http) {
         console.info('News Service Constructor initialized');
     }
     
-    getPosts() : Observable<Entry[]> {
+    getPosts() : Observable<NewsItem[]> {
       return this.http.get(this.serviceUrl)
        .map(this.extractData)
       .catch(this.handleError);
@@ -19,7 +20,11 @@ export class NewsService {
     
     private extractData(res: Response) {
         let body = res.json();
-        return body.responseData.feed.entries || { };
+        //google news
+        // return body.responseData.feed.entries || { };
+        //cbc news
+        return body.rss.channel.item || { };
+        
     }
     
     private handleError (error: any) {

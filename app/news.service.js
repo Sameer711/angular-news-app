@@ -15,7 +15,7 @@ var NewsService = (function () {
     // private serviceUrl = "/feed/google-news.js";
     function NewsService(http) {
         this.http = http;
-        this.serviceUrl = "/feed/google-news";
+        this.serviceUrl = "/feed/toJson?url=http://www.680news.com/feed/";
         console.info('News Service Constructor initialized');
     }
     NewsService.prototype.getPosts = function () {
@@ -25,7 +25,10 @@ var NewsService = (function () {
     };
     NewsService.prototype.extractData = function (res) {
         var body = res.json();
-        return body.responseData.feed.entries || {};
+        //google news
+        // return body.responseData.feed.entries || { };
+        //cbc news
+        return body.rss.channel.item || {};
     };
     NewsService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure
