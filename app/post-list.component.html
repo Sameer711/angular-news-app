@@ -12,9 +12,9 @@
 
 <div>
         <table class="table table-striped">
-            <tr *ngFor="let post of entries"  [innerHtml]="post.content">
+            <tr *ngFor="let post of entries">
             <h2>{{ post.title }}</h2>
-            
+            <span   [innerHtml]="post.content"></span>
                 <span *ngFor="let category of post.categories" class="btn btn-default">{{category}}</span>
             
             </tr> 

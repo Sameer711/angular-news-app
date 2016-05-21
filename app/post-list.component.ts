@@ -6,7 +6,7 @@ import { Entry } from "./entities";
 @Component({
     selector: 'post-list',  
     providers: [ HTTP_PROVIDERS, NewsService ],
-    templateUrl: 'app/post-list.component.html'
+    templateUrl: 'post-list.component.html'
 })
 
 export class PostListComponent implements OnInit {

@@ -20,7 +20,7 @@ var AppComponent = (function () {
         core_1.Component({
             selector: 'my-app',
             providers: [http_1.HTTP_PROVIDERS],
-            templateUrl: 'app/app.component.html',
+            templateUrl: 'app.component.html',
             directives: [post_list_component_1.PostListComponent]
         }), 
         __metadata('design:paramtypes', [])

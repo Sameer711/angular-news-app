@@ -12,10 +12,10 @@ var core_1 = require("@angular/core");
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 var NewsService = (function () {
+    // private serviceUrl = "/feed/google-news.js";
     function NewsService(http) {
         this.http = http;
-        // private serviceUrl = "http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
-        this.serviceUrl = "/feed/google-news.js";
+        this.serviceUrl = "http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
         console.info('News Service Constructor initialized');
     }
     NewsService.prototype.getPosts = function () {

@@ -26,7 +26,7 @@ var PostListComponent = (function () {
         core_1.Component({
             selector: 'post-list',
             providers: [http_1.HTTP_PROVIDERS, news_service_1.NewsService],
-            templateUrl: 'app/post-list.component.html'
+            templateUrl: 'post-list.component.html'
         }), 
         __metadata('design:paramtypes', [news_service_1.NewsService])
     ], PostListComponent);
