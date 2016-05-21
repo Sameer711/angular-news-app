@@ -1,7 +1,8 @@
 var express = require('express')
 var app = express()
 var request = require('request');
- 
+var newsFeedUrl = "https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
+  
 app.set('port', (process.env.PORT || 5000));
 
 app.use(function(req, res, next) {
@@ -28,14 +29,14 @@ app.get('/feed/google-news', function(req, res, next) {
      req.connection.remoteAddress || 
      req.socket.remoteAddress ||
      req.connection.socket.remoteAddress;
-  console.log('Client IP:' + clientip); 
-  var url = "https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss&userip=" + clientip;
+  // console.log('Client IP:' + clientip); 
+  var url = newsFeedUrl + "&userip=" + clientip;
   request(url, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    res.header('Content-Type', 'application/json');
-    res.send(body);
-  }
-})
+    if (!error && response.statusCode == 200) {
+      res.header('Content-Type', 'application/json');
+      res.send(body);
+    }
+  });
   
 });
 
