@@ -25,20 +25,20 @@ var core_1 = require('@angular/core');
   <div *ng-for="#value of arrayOfObjects | derp"> </div>
   ``
 */
-var DerpPipe = (function () {
-    function DerpPipe() {
+var ArrayFixPipe = (function () {
+    function ArrayFixPipe() {
     }
-    DerpPipe.prototype.transform = function (value, args) {
+    ArrayFixPipe.prototype.transform = function (value, args) {
         if (Array.isArray(value))
             return Array.from(value);
         else
             return [value];
     };
-    DerpPipe = __decorate([
-        core_1.Pipe({ name: 'derp' }), 
+    ArrayFixPipe = __decorate([
+        core_1.Pipe({ name: 'arrayFix' }), 
         __metadata('design:paramtypes', [])
-    ], DerpPipe);
-    return DerpPipe;
+    ], ArrayFixPipe);
+    return ArrayFixPipe;
 }());
-exports.DerpPipe = DerpPipe;
-//# sourceMappingURL=derp.pipe.js.map
+exports.ArrayFixPipe = ArrayFixPipe;
+//# sourceMappingURL=ngfor-array-fix.pipe.js.map

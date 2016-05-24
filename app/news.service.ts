@@ -2,56 +2,46 @@ import { Injectable } from "@angular/core";
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import { Entry } from './entities';
-import { NewsItem } from './entities/feed/news';
+import { NewsItem } from './entities/feed/newsitem';
 import {Feed, Feeds, FeedType} from "./entities/feed/feed";
 
 @Injectable()
 export class NewsService {
-    // private serviceUrls = [
-    //     "/feed/toJson?url=http://www.680news.com/feed/",
-    //     "/feed/google-news",
-    //     "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories"
-    // ];
+   
+    private feed: Feed;
     
     // private serviceUrl = "/feed/google-news.js";
     constructor(private http: Http) {
         console.info('News Service Constructor initialized');
-        //asdsa        
     }
-    
-    // getServiceUrl(feedType: FeedType): string {
-    //     switch (feedType) {
-    //         case FeedType._680News:
-    //             return this.serviceUrls[0];
-    //         case FeedType.CBCNews:
-    //             return this.serviceUrls[1];
-    //         case FeedType.CBCNews:
-    //             return this.serviceUrls[2];
-    //     }
-    // }
-    
+
     getPosts(feed: Feed) : Observable<NewsItem[]> {
-      if (feed.feedType == FeedType._680News) {
+        this.feed = feed;
         return this.http.get(feed.serviceUrl)
-        .map((res) => res.json().rss.channel.item || { })
+        .map(this.extractData, this)
         .catch(this.handleError);
-      }
-      else if (feed.feedType == FeedType.GoogleNews) {
-        return this.http.get(feed.serviceUrl)
-        .map((res) => res.json().responseData.feed.entries || { })
-        .catch(this.handleError);
-      }
     }
     
-    // private extractData(res: Response) {
-    //     let body = res.json();
-    //     //google news
+    private extractData(res: Response) : NewsItem {
+        let body = res.json();
+        // console.log('extractData called on ' + this.feed.name);
+        if (this.feed.feedType == FeedType._680News) {
+            return body.rss.channel.item
+            .map(function (item) {
+                var result = new NewsItem(item.title, item.link, null, null, null, item.description, item.category, item.content_encoded);
+                // console.dir(result);
+                return result;
+            }); 
+        }
+        else if (this.feed.feedType == FeedType.GoogleNews) {
+            return body.responseData.feed.entries
+            .map(function (item) {
+                return new NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content);
+            });
+        } 
+        //cbc news
         
-    //     // return res.json().responseData.feed.entries || { };
-    //     //cbc news
-    //     return res.json().rss.channel.item || { };
-        
-    // }
+    }
     
     private handleError (error: any) {
         // In a real world app, we might use a remote logging infrastructure

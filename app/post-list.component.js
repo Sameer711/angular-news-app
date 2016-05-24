@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var news_service_1 = require('./news.service');
-var derp_pipe_1 = require("./derp.pipe");
+var ngfor_array_fix_pipe_1 = require("./ngfor-array-fix.pipe");
 var feed_1 = require("./entities/feed/feed");
 var PostListComponent = (function () {
     function PostListComponent(newsService) {
@@ -46,7 +46,7 @@ var PostListComponent = (function () {
             selector: 'post-list',
             providers: [http_1.HTTP_PROVIDERS, news_service_1.NewsService],
             templateUrl: 'app/post-list.component.html',
-            pipes: [derp_pipe_1.DerpPipe]
+            pipes: [ngfor_array_fix_pipe_1.ArrayFixPipe]
         }), 
         __metadata('design:paramtypes', [news_service_1.NewsService])
     ], PostListComponent);

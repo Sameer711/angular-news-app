@@ -9,11 +9,10 @@ Source:
 
 <div>
     <div *ngFor="let post of entries">
-        <h2>{{ post.title }}</h2>
+        <h3><a *ngIf="post.link" href="{{post.link}}" target="blank">{{ post.title }}</a></h3>
         <div [innerHtml]="post.description">                        
         </div>
-        <span *ngIf="post.category" *ngFor="let cat of post.category | derp" class="btn btn-info">{{cat}}</span>            
-        <span *ngIf="post.categories" *ngFor="let cat of post.categories" class="btn btn-info">{{cat}}</span>            
+        <!--<span *ngIf="post.categories" *ngFor="let cat of post.categories; let i=index" class="btn btn-info category">{{i}} {{cat}}</span>            -->
     </div>
     
 </div>

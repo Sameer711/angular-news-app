@@ -4,6 +4,7 @@ var request = require('request');
 var newsFeedUrl = "https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
 var Promise = require('promise');
 var parseString = require('xml2js').parseString;
+import { FeedType } from "./app/entities/feed/feed";
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -36,6 +37,7 @@ app.get('/feed/google-news', function(req, res, next) {
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       res.header('Content-Type', 'application/json');
+      // body.feedType =  FeedType.GoogleNews;
       res.send(body);
     }
   });

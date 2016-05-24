@@ -16,8 +16,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   <div *ng-for="#value of arrayOfObjects | derp"> </div>
   ``
 */
-@Pipe({ name: 'derp' })
-export class DerpPipe implements PipeTransform {
+@Pipe({ name: 'arrayFix' })
+export class ArrayFixPipe implements PipeTransform {
   transform (value, args) {
     if (Array.isArray(value))
         return Array.from(value);

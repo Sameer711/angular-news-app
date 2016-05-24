@@ -11,47 +11,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
+var newsitem_1 = require('./entities/feed/newsitem');
 var NewsService = (function () {
-    // private serviceUrls = [
-    //     "/feed/toJson?url=http://www.680news.com/feed/",
-    //     "/feed/google-news",
-    //     "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories"
-    // ];
     // private serviceUrl = "/feed/google-news.js";
     function NewsService(http) {
         this.http = http;
         console.info('News Service Constructor initialized');
-        //asdsa        
     }
-    // getServiceUrl(feedType: FeedType): string {
-    //     switch (feedType) {
-    //         case FeedType._680News:
-    //             return this.serviceUrls[0];
-    //         case FeedType.CBCNews:
-    //             return this.serviceUrls[1];
-    //         case FeedType.CBCNews:
-    //             return this.serviceUrls[2];
-    //     }
-    // }
     NewsService.prototype.getPosts = function (feed) {
-        if (feed.feedType == 0 /* _680News */) {
-            return this.http.get(feed.serviceUrl)
-                .map(function (res) { return res.json().rss.channel.item || {}; })
-                .catch(this.handleError);
-        }
-        else if (feed.feedType == 1 /* GoogleNews */) {
-            return this.http.get(feed.serviceUrl)
-                .map(function (res) { return res.json().responseData.feed.entries || {}; })
-                .catch(this.handleError);
-        }
+        this.feed = feed;
+        return this.http.get(feed.serviceUrl)
+            .map(this.extractData, this)
+            .catch(this.handleError);
     };
-    // private extractData(res: Response) {
-    //     let body = res.json();
-    //     //google news
-    //     // return res.json().responseData.feed.entries || { };
-    //     //cbc news
-    //     return res.json().rss.channel.item || { };
-    // }
+    NewsService.prototype.extractData = function (res) {
+        var body = res.json();
+        // console.log('extractData called on ' + this.feed.name);
+        if (this.feed.feedType == 0 /* _680News */) {
+            return body.rss.channel.item
+                .map(function (item) {
+                var result = new newsitem_1.NewsItem(item.title, item.link, null, null, null, item.description, item.category, item.content_encoded);
+                // console.dir(result);
+                return result;
+            });
+        }
+        else if (this.feed.feedType == 1 /* GoogleNews */) {
+            return body.responseData.feed.entries
+                .map(function (item) {
+                return new newsitem_1.NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content);
+            });
+        }
+        //cbc news
+    };
     NewsService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure
         // We'd also dig deeper into the error to get a better message
