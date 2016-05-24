@@ -1,5 +1,5 @@
 //https://github.com/angular/angular/issues/6392
-import { Pipe } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 /*
   # Description:

@@ -1,5 +1,3 @@
-///<reference path="../typings/browser.d.ts"/> 
-///<reference path="./../typings/browser/ambient/es6-shim/index.d.ts"/>
 import { bootstrap } from "@angular/platform-browser-dynamic";
 import { ROUTER_PROVIDERS } from '@angular/router-deprecated';
 import { HTTP_PROVIDERS } from '@angular/http';

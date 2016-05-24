@@ -12,24 +12,46 @@ var core_1 = require("@angular/core");
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 var NewsService = (function () {
+    // private serviceUrls = [
+    //     "/feed/toJson?url=http://www.680news.com/feed/",
+    //     "/feed/google-news",
+    //     "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories"
+    // ];
     // private serviceUrl = "/feed/google-news.js";
     function NewsService(http) {
         this.http = http;
-        this.serviceUrl = "/feed/toJson?url=http://www.680news.com/feed/";
         console.info('News Service Constructor initialized');
+        //asdsa        
     }
-    NewsService.prototype.getPosts = function () {
-        return this.http.get(this.serviceUrl)
-            .map(this.extractData)
-            .catch(this.handleError);
+    // getServiceUrl(feedType: FeedType): string {
+    //     switch (feedType) {
+    //         case FeedType._680News:
+    //             return this.serviceUrls[0];
+    //         case FeedType.CBCNews:
+    //             return this.serviceUrls[1];
+    //         case FeedType.CBCNews:
+    //             return this.serviceUrls[2];
+    //     }
+    // }
+    NewsService.prototype.getPosts = function (feed) {
+        if (feed.feedType == 0 /* _680News */) {
+            return this.http.get(feed.serviceUrl)
+                .map(function (res) { return res.json().rss.channel.item || {}; })
+                .catch(this.handleError);
+        }
+        else if (feed.feedType == 1 /* GoogleNews */) {
+            return this.http.get(feed.serviceUrl)
+                .map(function (res) { return res.json().responseData.feed.entries || {}; })
+                .catch(this.handleError);
+        }
     };
-    NewsService.prototype.extractData = function (res) {
-        var body = res.json();
-        //google news
-        // return body.responseData.feed.entries || { };
-        //cbc news
-        return body.rss.channel.item || {};
-    };
+    // private extractData(res: Response) {
+    //     let body = res.json();
+    //     //google news
+    //     // return res.json().responseData.feed.entries || { };
+    //     //cbc news
+    //     return res.json().rss.channel.item || { };
+    // }
     NewsService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure
         // We'd also dig deeper into the error to get a better message

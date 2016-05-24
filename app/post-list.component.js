@@ -12,22 +12,40 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var news_service_1 = require('./news.service');
 var derp_pipe_1 = require("./derp.pipe");
+var feed_1 = require("./entities/feed/feed");
 var PostListComponent = (function () {
     function PostListComponent(newsService) {
         this.newsService = newsService;
+        this.feedType = 0 /* _680News */;
+        this.feed = feed_1.Feeds.Get(0 /* _680News */);
         this.mode = 'Observable';
     }
     PostListComponent.prototype.ngOnInit = function () { this.getPosts(); };
+    PostListComponent.prototype.ngDoCheck = function () {
+        if (this.feedType != this.feed.feedType) {
+            console.log(this.feedType, this.feed.feedType);
+            this.feed = feed_1.Feeds.Get(this.feedType);
+            console.log("feedtype changed to:" + this.feed.name);
+            this.getPosts();
+        }
+    };
     PostListComponent.prototype.getPosts = function () {
         var _this = this;
-        this.newsService.getPosts()
+        console.log("Get posts called for feed " + this.feed.name);
+        this.newsService.getPosts(this.feed)
             .subscribe(function (data) { _this.entries = data; }, function (error) { console.log(error); }, function () { return console.log('done'); });
     };
+    Object.defineProperty(PostListComponent.prototype, "FeedName", {
+        // TODO: Remove this when we're done
+        get: function () { return this.feed.name; },
+        enumerable: true,
+        configurable: true
+    });
     PostListComponent = __decorate([
         core_1.Component({
             selector: 'post-list',
             providers: [http_1.HTTP_PROVIDERS, news_service_1.NewsService],
-            templateUrl: 'post-list.component.html',
+            templateUrl: 'app/post-list.component.html',
             pipes: [derp_pipe_1.DerpPipe]
         }), 
         __metadata('design:paramtypes', [news_service_1.NewsService])

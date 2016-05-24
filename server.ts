@@ -7,36 +7,25 @@ var parseString = require('xml2js').parseString;
 
 app.set('port', (process.env.PORT || 5000));
 
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
+//main app - completely static 
+// app.use(express.static(__dirname + '/app'));
 
-app.use(express.static(__dirname + '/app'));
-
+//modules for use in the app (ie angular,etc)
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
+
+//main app - completely static 
 app.use('/app', express.static(__dirname + '/app'));
 
 app.get('/systemjs.config.js', function(req, res, next) {
   res.sendFile('systemjs.config.js', { root: __dirname  });
 });
 
+//default request - load index.html
 app.get('/', function(req, res, next) {
   res.sendFile('index.html', { root: __dirname  });
 });
 
-
-app.get('/feed/test', function(req, res, next) {
-  var parseString = require('xml2js').parseString;
-  var xml = ``;
-  parseString(xml,  {trim: true}, function (err, result) {
-      res.header('Content-Type', 'application/json');
-      res.send(result);
-  });
-});
-
-
+//google news feed
 app.get('/feed/google-news', function(req, res, next) {
   var clientip = req.headers['x-forwarded-for'] || 
      req.connection.remoteAddress || 
@@ -53,7 +42,7 @@ app.get('/feed/google-news', function(req, res, next) {
   
 });
 
-//Read an xml feed 
+//Read an xml feed and return as JSON
 function xmlFeedToJson(url) {
     return new Promise(function (fulfill, reject) {
       request(url, function (error, response, body) {
@@ -76,6 +65,7 @@ function xmlFeedToJson(url) {
     });
 }
 
+//Read an xml feed and return as JSON
 app.get('/feed/toJson', function(req, res, next) {
   var url = req.query.url;
   if (!url)

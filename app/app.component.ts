@@ -6,7 +6,7 @@ import { PostListComponent } from "./post-list.component";
 @Component({
     selector: 'my-app',  
     providers: [ HTTP_PROVIDERS ],
-    templateUrl: 'app.component.html',
+    templateUrl: 'app/app.component.html',
     directives: [PostListComponent]
 })
 

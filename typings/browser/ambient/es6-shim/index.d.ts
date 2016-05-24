@@ -551,7 +551,7 @@ interface PromiseConstructor {
     resolve(): Promise<void>;
 }
 
-declare var Promise: PromiseConstructor;
+declare var Promise: any;
 
 interface Map<K, V> {
     clear(): void;

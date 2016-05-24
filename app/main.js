@@ -1,6 +1,4 @@
 "use strict";
-///<reference path="../typings/browser.d.ts"/> 
-///<reference path="./../typings/browser/ambient/es6-shim/index.d.ts"/>
 var platform_browser_dynamic_1 = require("@angular/platform-browser-dynamic");
 var router_deprecated_1 = require('@angular/router-deprecated');
 var http_1 = require('@angular/http');

@@ -1,21 +1,19 @@
-<!--Posts go here
-<div>
-    <table class="table table-striped">
-        <tr *ngFor="let post of posts">
-            <td>{{post.id }}</td>
-            <td> {{ post.body }}</td> 
-            <td>{{post.name}}</td>
-            <td>{{post.email}}</td>
-        </tr>
-    </table>
-</div>-->
+
+<h1>{{FeedName}}</h1>
+
+feedtype:<input type="text" [(ngModel)]="feedType">
+Source: 
+<input id="radio1" type="radio" [(ngModel)]="feedType" value="0" name="feedType" >680 News
+<input id="radio2" type="radio" [(ngModel)]="feedType" value="1" name="feedType">Google News
+<input id="radio3" type="radio" [(ngModel)]="feedType" value="2" name="feedType" >CBC News
 
 <div>
     <div *ngFor="let post of entries">
         <h2>{{ post.title }}</h2>
         <div [innerHtml]="post.description">                        
         </div>
-        <span *ngFor="let cat of post.category | derp" class="btn btn-info">{{cat}}</span>            
+        <span *ngIf="post.category" *ngFor="let cat of post.category | derp" class="btn btn-info">{{cat}}</span>            
+        <span *ngIf="post.categories" *ngFor="let cat of post.categories" class="btn btn-info">{{cat}}</span>            
     </div>
     
 </div>
