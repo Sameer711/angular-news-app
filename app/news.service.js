@@ -30,7 +30,8 @@ var NewsService = (function () {
         if (this.feed.feedType == 0 /* _680News */) {
             return body.rss.channel.item
                 .map(function (item) {
-                var result = new newsitem_1.NewsItem(item.title, item.link, null, null, null, item.description, item.category, item.content_encoded);
+                var img = (item && item.media_content && item.media_content.$) ? item.media_content.$.url : null;
+                var result = new newsitem_1.NewsItem(item.title, item.link, img, null, null, item.description, item.category, item.content_encoded);
                 // console.dir(result);
                 return result;
             });

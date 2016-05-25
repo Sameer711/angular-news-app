@@ -1,15 +1,19 @@
 
 <h1>{{FeedName}}</h1>
 
-feedtype:<input type="text" [(ngModel)]="feedType">
-Source: 
-<input id="radio1" type="radio" [(ngModel)]="feedType" value="0" name="feedType" >680 News
-<input id="radio2" type="radio" [(ngModel)]="feedType" value="1" name="feedType">Google News
-<input id="radio3" type="radio" [(ngModel)]="feedType" value="2" name="feedType" >CBC News
+<!--feedtype:<input type="text" [(ngModel)]="feedType">-->
+<div style="height:30px">
+    
+    <span *ngFor="let feed of Feeds; let i=index">
+    <input id="feed{{index}}" type="checkbox"
+          value="{{feed.feedType}" name="chk{{i}}" class="feedSwitch" [(ngModel)]="feed.feedType == feedType" />{{feed.name}}
+    </span>
+</div>
 
 <div>
     <div *ngFor="let post of entries">
         <h3><a *ngIf="post.link" href="{{post.link}}" target="blank">{{ post.title }}</a></h3>
+        <img *ngIf="post.imageUrl" src="{{post.imageUrl}}">
         <div [innerHtml]="post.description">                        
         </div>
         <!--<span *ngIf="post.categories" *ngFor="let cat of post.categories; let i=index" class="btn btn-info category">{{i}} {{cat}}</span>            -->

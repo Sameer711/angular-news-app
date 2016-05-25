@@ -2,7 +2,7 @@ export class NewsItem
 {
     title: string;
     link: string;
-    image: string;
+    imageUrl: string;
     author: string;
     publishedDate: string;
     description: string;
@@ -12,7 +12,7 @@ export class NewsItem
     constructor(
     title: string,
     link: string ,
-    image: string,
+    imageUrl: string,
     author: string,
     publishedDate: string,
     description: string,
@@ -21,7 +21,8 @@ export class NewsItem
     {
         this.title = title;
         this.link = link;
-        this.image = image;
+        if (imageUrl && imageUrl.length > 0)
+            this.imageUrl = imageUrl;
         this.author = author;
         this.publishedDate = publishedDate;
         this.description = description;

@@ -16,6 +16,7 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 //main app - completely static 
 app.use('/app', express.static(__dirname + '/app'));
+app.use('/lib', express.static(__dirname + '/lib'));
 
 app.get('/systemjs.config.js', function(req, res, next) {
   res.sendFile('systemjs.config.js', { root: __dirname  });
@@ -56,7 +57,7 @@ function xmlFeedToJson(url) {
                 }],
                 trim: true,
                 explicitArray: false,
-                ignoreAttrs : true               
+                // ignoreAttrs : true               
             }, function (err, parsedXmlResult) {
               fulfill(parsedXmlResult);
             });

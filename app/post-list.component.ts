@@ -1,4 +1,4 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
+import {Component, OnInit, DoCheck, AfterViewInit } from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
 import { NewsService} from './news.service';
 import { NewsItem } from "./entities/feed/newsitem";
@@ -12,9 +12,15 @@ import {Feed, Feeds, FeedType} from "./entities/feed/feed";
     pipes: [ArrayFixPipe]
 })
 
-export class PostListComponent implements OnInit, DoCheck {
-   ngOnInit() { this.getPosts(); }
+export class PostListComponent implements OnInit, AfterViewInit, DoCheck {
+   ngOnInit() { 
+       this.getPosts(); 
+    }
 
+   ngAfterViewInit() {
+           //$(".feedSwitch").bootstrapSwitch();                   
+   }
+   
    ngDoCheck() {
        
        if (this.feedType != this.feed.feedType) {
@@ -25,6 +31,7 @@ export class PostListComponent implements OnInit, DoCheck {
        }
    }
 
+  Feeds = Feeds.feeds;
   feedType = FeedType._680News;
   private feed = Feeds.Get(FeedType._680News);
   //feedTypeString = Util.FeedTypeToString(feedType);

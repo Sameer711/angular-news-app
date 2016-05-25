@@ -20,7 +20,7 @@ var Feeds = (function () {
         return Feeds.feeds.find(function (feed) { return feed.feedType == feedType; });
     };
     Feeds.feeds = [
-        new Feed("680 News", "/feed/toJson?url=http://www.680news.com/feed/", 0 /* _680News */),
+        new Feed("680 News", "/feed/toJson?url=http://www.680news.com/feed/metrolinx/local/", 0 /* _680News */),
         new Feed("Google News", "/feed/google-news", 1 /* GoogleNews */),
         new Feed("CBC News", "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories", 2 /* CBCNews */)
     ];

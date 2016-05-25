@@ -16,11 +16,17 @@ var feed_1 = require("./entities/feed/feed");
 var PostListComponent = (function () {
     function PostListComponent(newsService) {
         this.newsService = newsService;
+        this.Feeds = feed_1.Feeds.feeds;
         this.feedType = 0 /* _680News */;
         this.feed = feed_1.Feeds.Get(0 /* _680News */);
         this.mode = 'Observable';
     }
-    PostListComponent.prototype.ngOnInit = function () { this.getPosts(); };
+    PostListComponent.prototype.ngOnInit = function () {
+        this.getPosts();
+    };
+    PostListComponent.prototype.ngAfterViewInit = function () {
+        //$(".feedSwitch").bootstrapSwitch();                   
+    };
     PostListComponent.prototype.ngDoCheck = function () {
         if (this.feedType != this.feed.feedType) {
             console.log(this.feedType, this.feed.feedType);

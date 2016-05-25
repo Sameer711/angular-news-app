@@ -18,7 +18,7 @@ export class Feed {
 export class Feeds {
     
     static feeds = [
-        new Feed("680 News", "/feed/toJson?url=http://www.680news.com/feed/", FeedType._680News),
+        new Feed("680 News", "/feed/toJson?url=http://www.680news.com/feed/metrolinx/local/", FeedType._680News),
         new Feed("Google News", "/feed/google-news", FeedType.GoogleNews),
         new Feed("CBC News", "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews)
     ];

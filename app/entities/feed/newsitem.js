@@ -1,9 +1,10 @@
 "use strict";
 var NewsItem = (function () {
-    function NewsItem(title, link, image, author, publishedDate, description, categories, fullDescription) {
+    function NewsItem(title, link, imageUrl, author, publishedDate, description, categories, fullDescription) {
         this.title = title;
         this.link = link;
-        this.image = image;
+        if (imageUrl && imageUrl.length > 0)
+            this.imageUrl = imageUrl;
         this.author = author;
         this.publishedDate = publishedDate;
         this.description = description;
