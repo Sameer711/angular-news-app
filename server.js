@@ -2,7 +2,6 @@
 var express = require('express');
 var app = express();
 var request = require('request');
-var newsFeedUrl = "https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss";
 var Promise = require('promise');
 var parseString = require('xml2js').parseString;
 app.set('port', (process.env.PORT || 5000));
@@ -27,8 +26,13 @@ app.get('/feed/google-news', function (req, res, next) {
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
     // console.log('Client IP:' + clientip); 
-    var url = newsFeedUrl + "&userip=" + clientip;
-    request(url, function (error, response, body) {
+    var url = "https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=3&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss"
+        + "&userip=" + clientip;
+    request({
+        uri: url,
+        method: 'GET',
+        json: true
+    }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             res.header('Content-Type', 'application/json');
             body.feedType = 1 /* GoogleNews */;
@@ -39,7 +43,11 @@ app.get('/feed/google-news', function (req, res, next) {
 //Read an xml feed and return as JSON
 function xmlFeedToJson(url) {
     return new Promise(function (fulfill, reject) {
-        request(url, function (error, response, body) {
+        request({
+            uri: url,
+            method: 'GET',
+            json: true
+        }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 parseString(body, {
                     tagNameProcessors: [function (name) {
@@ -60,12 +68,14 @@ function xmlFeedToJson(url) {
 //Read an xml feed and return as JSON
 app.get('/feed/toJson', function (req, res, next) {
     var url = req.query.url;
+    var feedType = req.query.feedType;
     if (!url) {
         res.header('Content-Type', 'application/json');
         res.send(null);
     }
     xmlFeedToJson(url).then(function (body) {
         res.header('Content-Type', 'application/json');
+        body.feedType = feedType;
         res.send(body);
     });
 });

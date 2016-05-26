@@ -1,6 +1,6 @@
 "use strict";
 var NewsItem = (function () {
-    function NewsItem(title, link, imageUrl, author, publishedDate, description, categories, fullDescription) {
+    function NewsItem(title, link, imageUrl, author, publishedDate, description, categories, fullDescription, feedType) {
         this.title = title;
         this.link = link;
         if (imageUrl && imageUrl.length > 0)
@@ -13,6 +13,7 @@ var NewsItem = (function () {
         else
             this.categories = categories;
         this.fullDescription = fullDescription;
+        this.feedType = feedType;
     }
     return NewsItem;
 }());

@@ -20,9 +20,10 @@ export class Feed {
 export class Feeds {
     
     static feeds = [
-        new Feed("680 News", "/feed/toJson?url=http://www.680news.com/feed/metrolinx/local/", FeedType._680News, true),
-        new Feed("Google News", "/feed/google-news", FeedType.GoogleNews, false),
-        new Feed("CBC News", "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews, false)
+        new Feed("680 News Local", "/feed/toJson?feedType=" + FeedType._680News +"&url=http://www.680news.com/feed/metrolinx/local/", FeedType._680News, false),
+        new Feed("680 News All", "/feed/toJson?feedType=" + FeedType._680News +"&url=http://www.680news.com/feed/", FeedType._680News, false),
+        new Feed("Google News", "/feed/google-news", FeedType.GoogleNews, true),
+        new Feed("CBC News", "/feed/toJson?feedType=" + FeedType.CBCNews + "&url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews, false)
     ];
     
     // constructor() {
@@ -31,8 +32,12 @@ export class Feeds {
     //     Feeds.feeds.push(new Feed("CBC News", "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews));
     // }    
     
-    static Get(filterList: FeedType[]) : Feed[] {
-        return Feeds.feeds.filter(feed=> filterList.findIndex(f=>f == feed.feedType) > 0);
+         
+    public static get enabledFeeds() : Feed[] {
+        return Feeds.feeds.filter(feed=> feed.isEnabled);
+    }
+    public static Get(filterList: FeedType[]) : Feed[] {
+        return Feeds.feeds.filter(feed=> filterList.findIndex(f=>f == feed.feedType) > -1);
     }
           
 } 

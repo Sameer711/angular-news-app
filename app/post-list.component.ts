@@ -4,6 +4,7 @@ import { NewsService} from './news.service';
 import { NewsItem } from "./entities/feed/newsitem";
 import { ArrayFixPipe } from "./ngfor-array-fix.pipe";
 import {Feed, Feeds, FeedType} from "./entities/feed/feed";
+import "./Array.equals";
 
 @Component({
     selector: 'post-list',  
@@ -12,36 +13,43 @@ import {Feed, Feeds, FeedType} from "./entities/feed/feed";
     pipes: [ArrayFixPipe]
 })
 
-export class PostListComponent implements OnInit, AfterViewInit, DoCheck {
+export class PostListComponent implements OnInit, AfterViewInit {
    ngOnInit() { 
        this.getPosts(); 
     }
 
    ngAfterViewInit() {
-           //$(".feedSwitch").bootstrapSwitch();                   
+        //    $(".feedSwitch").bootstrapSwitch();                   
    }
    
    ngDoCheck() {
        
-       if (this.feedsChanged()) {
+    //   this.dirtyCheckAndUpdate(null);
+   }
+   
+   private feedSelected(feed: Feed, isChecked: boolean) {
+       feed.isEnabled = isChecked;
+       this.dirtyCheckAndUpdate();
+   }
+      
+   private dirtyCheckAndUpdate() : void {
+        if (this.feedsChanged()) {
            console.log('feeds changed!');
         //    console.log(this.feedType, this.feed.feedType);
-           this.feeds = Feeds.Get(this.selectedFeedTypes);
-        //    console.log("feedtype changed to:" + this.feed.name);
+           this.oldFeeds = Feeds.enabledFeeds;
+            console.log("feedtype changed to:" + this.FeedNames);
            this.getPosts();
        }
    }
-   
    private feedsChanged() : boolean {
-       return this.feeds.every(feed=> this.selectedFeedTypes.findIndex(f=>f == feed.feedType)>-1);
+       var enabledFeeds = Feeds.enabledFeeds;
+       var result = !this.oldFeeds.equals(enabledFeeds);
+       console.log("oldfeeds", this.oldFeeds, "enabledFeeds:",enabledFeeds,"feeds changed:", result);
+       return result;
    }
 
-  public AllFeeds = Feeds.feeds; //just for binding to UI
-  
-  //readwrite access
-  public selectedFeedTypes = [FeedType._680News];
-  
-  private feeds = Feeds.Get([FeedType._680News]);
+  public AllFeeds = Feeds.feeds; //just for binding to UI need a local instance.
+  private oldFeeds = Feeds.enabledFeeds;  
   //feedTypeString = Util.FeedTypeToString(feedType);
   errorMessage: string;
   mode = 'Observable'; 
@@ -49,20 +57,24 @@ export class PostListComponent implements OnInit, AfterViewInit, DoCheck {
   
   constructor(private newsService: NewsService) {}
   getPosts() {
-      if (this.feeds.length ==0) {
+      if (Feeds.enabledFeeds.length ==0) {
+        console.warn('No feeds enabled');
         this.entries = [];          
         return;
       }
         
     //   console.log("Get posts called for feed " + this.feed.name);
-      this.newsService.getPosts(this.feeds)
+      this.newsService.getPosts()
         .subscribe(
-            data => { this.entries = data },
+            data => {
+                console.log("newsService data=",data); 
+                this.entries = data;
+            },
             error => { console.log(error) } ,
-            () => console.log('done')
+            () => console.log('news service call done')
        );            
   }
   
-  get FeedNames() { return this.feeds.join(","); }
+  get FeedNames() : string { return Feeds.enabledFeeds.map(f=>f.name).join(","); }
   
 }

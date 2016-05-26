@@ -8,6 +8,7 @@ export class NewsItem
     description: string;
     categories: string[];
     fullDescription: string;
+    feedType: number;
             
     constructor(
     title: string,
@@ -17,7 +18,8 @@ export class NewsItem
     publishedDate: string,
     description: string,
     categories: any,
-    fullDescription: string) 
+    fullDescription: string,
+    feedType: number) 
     {
         this.title = title;
         this.link = link;
@@ -31,6 +33,7 @@ export class NewsItem
         else 
             this.categories = categories;
         this.fullDescription = fullDescription;
+        this.feedType = feedType;
             
        
     }

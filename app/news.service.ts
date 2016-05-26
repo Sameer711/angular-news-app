@@ -6,37 +6,45 @@ import { NewsItem } from './entities/feed/newsitem';
 import {Feed, Feeds, FeedType} from "./entities/feed/feed";
 
 import 'rxjs/Rx';
-import 'rxjs/observable/merge';
-import 'rxjs/observer';
-import 'rxjs/operator/merge';
+// import 'rxjs/observable/merge';
+// import 'rxjs/observer';
+// import 'rxjs/operator/merge';
 
 
 @Injectable()
 export class NewsService {
    
-    private feeds: Feed[];
-    
-    // private serviceUrl = "/feed/google-news.js";
     constructor(private http: Http) {
         console.info('News Service Constructor initialized');
     }
 
-    getPosts(feeds: Feed[]) : Observable<NewsItem[]> {
-        console.log('getPosts called:', feeds);
-        this.feeds = feeds;
-        if (this.feeds.length ==0) {
+    getPosts() : Observable<NewsItem[]> {
+        console.log('getPosts called:', Feeds.enabledFeeds);
+        if (Feeds.enabledFeeds.length ==0) {
             return  new Observable<NewsItem[]>();
         }
-        let result = new Observable<NewsItem[]>();
-        this.feeds.forEach(feed => {
-            result.merge(this.http.get(feed.serviceUrl)
+        let result: Observable<NewsItem[]>;
+        Feeds.enabledFeeds.forEach(feed => {
+            console.log("Calling httpget for " ,feed.serviceUrl);
+            var thisCall = this.http.get(feed.serviceUrl)
+                .take(3)
                 .map(this.extractData, this)
-                .catch(this.handleError));
+                .catch(this.handleError);
+            // console.log('merging result', result, thisCall);
+            if (typeof(result) == "undefined" || result == null) {
+              console.log("initial call..");
+              result = thisCall;
+            }
+            else {
+                console.log("merging..");
+                result.merge(thisCall);
+            }
         });
         //get each of the results and join them.
-        // return this.http.get(feed.serviceUrl)
+        // var result = this.http.get(Feeds.enabledFeeds[0].serviceUrl)
         // .map(this.extractData, this)
         // .catch(this.handleError);
+        // console.log("REsult:", result);
         return result;
     }
     
@@ -47,7 +55,7 @@ export class NewsService {
             return body.rss.channel.item
             .map(function (item) {
                 var img = (item && item.media_content && item.media_content.$) ? item.media_content.$.url : null;
-                var result = new NewsItem(item.title, item.link, img, null, null, item.description, item.category, item.content_encoded);
+                var result = new NewsItem(item.title, item.link, img, null, null, item.description, item.category, item.content_encoded, body.feedType);
                 // console.dir(result);
                 return result;
             }); 
@@ -55,9 +63,11 @@ export class NewsService {
         else if (body.feedType == FeedType.GoogleNews) {
             return body.responseData.feed.entries
             .map(function (item) {
-                return new NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content);
+                var result = new NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content, body.feedType);
+                return result;
             });
         } 
+        throw new Error("Unhandled feed type");
         //cbc news
         
     }

@@ -13,46 +13,58 @@ var http_1 = require('@angular/http');
 var news_service_1 = require('./news.service');
 var ngfor_array_fix_pipe_1 = require("./ngfor-array-fix.pipe");
 var feed_1 = require("./entities/feed/feed");
+require("./Array.equals");
 var PostListComponent = (function () {
     function PostListComponent(newsService) {
         this.newsService = newsService;
-        this.AllFeeds = feed_1.Feeds.feeds; //just for binding to UI
-        //readwrite access
-        this.selectedFeedTypes = [0 /* _680News */];
-        this.feeds = feed_1.Feeds.Get([0 /* _680News */]);
+        this.AllFeeds = feed_1.Feeds.feeds; //just for binding to UI need a local instance.
+        this.oldFeeds = feed_1.Feeds.enabledFeeds;
         this.mode = 'Observable';
     }
     PostListComponent.prototype.ngOnInit = function () {
         this.getPosts();
     };
     PostListComponent.prototype.ngAfterViewInit = function () {
-        //$(".feedSwitch").bootstrapSwitch();                   
+        //    $(".feedSwitch").bootstrapSwitch();                   
     };
     PostListComponent.prototype.ngDoCheck = function () {
+        //   this.dirtyCheckAndUpdate(null);
+    };
+    PostListComponent.prototype.feedSelected = function (feed, isChecked) {
+        feed.isEnabled = isChecked;
+        this.dirtyCheckAndUpdate();
+    };
+    PostListComponent.prototype.dirtyCheckAndUpdate = function () {
         if (this.feedsChanged()) {
             console.log('feeds changed!');
             //    console.log(this.feedType, this.feed.feedType);
-            this.feeds = feed_1.Feeds.Get(this.selectedFeedTypes);
-            //    console.log("feedtype changed to:" + this.feed.name);
+            this.oldFeeds = feed_1.Feeds.enabledFeeds;
+            console.log("feedtype changed to:" + this.FeedNames);
             this.getPosts();
         }
     };
     PostListComponent.prototype.feedsChanged = function () {
-        var _this = this;
-        return this.feeds.every(function (feed) { return _this.selectedFeedTypes.findIndex(function (f) { return f == feed.feedType; }) > -1; });
+        var enabledFeeds = feed_1.Feeds.enabledFeeds;
+        var result = !this.oldFeeds.equals(enabledFeeds);
+        console.log("oldfeeds", this.oldFeeds, "enabledFeeds:", enabledFeeds, "feeds changed:", result);
+        return result;
     };
     PostListComponent.prototype.getPosts = function () {
         var _this = this;
-        if (this.feeds.length == 0) {
+        if (feed_1.Feeds.enabledFeeds.length == 0) {
+            console.warn('No feeds enabled');
             this.entries = [];
             return;
         }
         //   console.log("Get posts called for feed " + this.feed.name);
-        this.newsService.getPosts(this.feeds)
-            .subscribe(function (data) { _this.entries = data; }, function (error) { console.log(error); }, function () { return console.log('done'); });
+        this.newsService.getPosts()
+            .subscribe(function (data) {
+            console.log("newsService data=", data);
+            _this.entries = data;
+        }, function (error) { console.log(error); }, function () { return console.log('news service call done'); });
     };
     Object.defineProperty(PostListComponent.prototype, "FeedNames", {
-        get: function () { return this.feeds.join(","); },
+        get: function () { return feed_1.Feeds.enabledFeeds.map(function (f) { return f.name; }).join(","); },
         enumerable: true,
         configurable: true
     });

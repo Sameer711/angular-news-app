@@ -1,21 +1,25 @@
 
-<h1>{{FeedName}}</h1>
+<h1>{{FeedNames}}</h1>
 
 <!--feedtype:<input type="text" [(ngModel)]="feedType">-->
-<div style="height:30px">
+<div class="checkbox" *ngFor="let feed of AllFeeds; let i=index">
     
-    <span *ngFor="let feed of AllFeeds; let i=index">
-    <input id="feed{{index}}" type="checkbox"
-          value="{{feed.feedType}" name="chk{{i}}" class="feedSwitch" [(ngModel)]="feed.isEnabled" />{{feed.name}}
-    </span>
+    <label>
+    <input #cv id="feed{{i}}" type="checkbox" (change)="feedSelected(feed, cv.checked)"
+          value="{{feed.feedType}}" name="chk{{i}}" class="feedSwitch" [(ngModel)]="feed.isEnabled" />{{feed.name}}
+    </label>
 </div>
 
 <div>
     <div *ngFor="let post of entries">
-        <h3><a *ngIf="post.link" href="{{post.link}}" target="blank">{{ post.title }}</a></h3>
+        <h3><a *ngIf="post.link" href="{{post.link}}" target="blank">{{ post.title }}</a>
+        <span class="btn btn-info category">{{post.feedType}}</span>            
+        
+        </h3>
         <img *ngIf="post.imageUrl" src="{{post.imageUrl}}">
         <div [innerHtml]="post.description">                        
         </div>
+        
         <!--<span *ngIf="post.categories" *ngFor="let cat of post.categories; let i=index" class="btn btn-info category">{{i}} {{cat}}</span>            -->
     </div>
     

@@ -12,33 +12,44 @@ var core_1 = require("@angular/core");
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 var newsitem_1 = require('./entities/feed/newsitem');
+var feed_1 = require("./entities/feed/feed");
 require('rxjs/Rx');
-require('rxjs/observable/merge');
-require('rxjs/observer');
-require('rxjs/operator/merge');
+// import 'rxjs/observable/merge';
+// import 'rxjs/observer';
+// import 'rxjs/operator/merge';
 var NewsService = (function () {
-    // private serviceUrl = "/feed/google-news.js";
     function NewsService(http) {
         this.http = http;
         console.info('News Service Constructor initialized');
     }
-    NewsService.prototype.getPosts = function (feeds) {
+    NewsService.prototype.getPosts = function () {
         var _this = this;
-        console.log('getPosts called:', feeds);
-        this.feeds = feeds;
-        if (this.feeds.length == 0) {
+        console.log('getPosts called:', feed_1.Feeds.enabledFeeds);
+        if (feed_1.Feeds.enabledFeeds.length == 0) {
             return new Observable_1.Observable();
         }
-        var result = new Observable_1.Observable();
-        this.feeds.forEach(function (feed) {
-            result.merge(_this.http.get(feed.serviceUrl)
+        var result;
+        feed_1.Feeds.enabledFeeds.forEach(function (feed) {
+            console.log("Calling httpget for ", feed.serviceUrl);
+            var thisCall = _this.http.get(feed.serviceUrl)
+                .take(3)
                 .map(_this.extractData, _this)
-                .catch(_this.handleError));
+                .catch(_this.handleError);
+            // console.log('merging result', result, thisCall);
+            if (typeof (result) == "undefined" || result == null) {
+                console.log("initial call..");
+                result = thisCall;
+            }
+            else {
+                console.log("merging..");
+                result.merge(thisCall);
+            }
         });
         //get each of the results and join them.
-        // return this.http.get(feed.serviceUrl)
+        // var result = this.http.get(Feeds.enabledFeeds[0].serviceUrl)
         // .map(this.extractData, this)
         // .catch(this.handleError);
+        // console.log("REsult:", result);
         return result;
     };
     NewsService.prototype.extractData = function (res) {
@@ -48,7 +59,7 @@ var NewsService = (function () {
             return body.rss.channel.item
                 .map(function (item) {
                 var img = (item && item.media_content && item.media_content.$) ? item.media_content.$.url : null;
-                var result = new newsitem_1.NewsItem(item.title, item.link, img, null, null, item.description, item.category, item.content_encoded);
+                var result = new newsitem_1.NewsItem(item.title, item.link, img, null, null, item.description, item.category, item.content_encoded, body.feedType);
                 // console.dir(result);
                 return result;
             });
@@ -56,9 +67,11 @@ var NewsService = (function () {
         else if (body.feedType == 1 /* GoogleNews */) {
             return body.responseData.feed.entries
                 .map(function (item) {
-                return new newsitem_1.NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content);
+                var result = new newsitem_1.NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content, body.feedType);
+                return result;
             });
         }
+        throw new Error("Unhandled feed type");
         //cbc news
     };
     NewsService.prototype.handleError = function (error) {
