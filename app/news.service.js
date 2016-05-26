@@ -12,22 +12,39 @@ var core_1 = require("@angular/core");
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 var newsitem_1 = require('./entities/feed/newsitem');
+require('rxjs/Rx');
+require('rxjs/observable/merge');
+require('rxjs/observer');
+require('rxjs/operator/merge');
 var NewsService = (function () {
     // private serviceUrl = "/feed/google-news.js";
     function NewsService(http) {
         this.http = http;
         console.info('News Service Constructor initialized');
     }
-    NewsService.prototype.getPosts = function (feed) {
-        this.feed = feed;
-        return this.http.get(feed.serviceUrl)
-            .map(this.extractData, this)
-            .catch(this.handleError);
+    NewsService.prototype.getPosts = function (feeds) {
+        var _this = this;
+        console.log('getPosts called:', feeds);
+        this.feeds = feeds;
+        if (this.feeds.length == 0) {
+            return new Observable_1.Observable();
+        }
+        var result = new Observable_1.Observable();
+        this.feeds.forEach(function (feed) {
+            result.merge(_this.http.get(feed.serviceUrl)
+                .map(_this.extractData, _this)
+                .catch(_this.handleError));
+        });
+        //get each of the results and join them.
+        // return this.http.get(feed.serviceUrl)
+        // .map(this.extractData, this)
+        // .catch(this.handleError);
+        return result;
     };
     NewsService.prototype.extractData = function (res) {
         var body = res.json();
         // console.log('extractData called on ' + this.feed.name);
-        if (this.feed.feedType == 0 /* _680News */) {
+        if (body.feedType == 0 /* _680News */) {
             return body.rss.channel.item
                 .map(function (item) {
                 var img = (item && item.media_content && item.media_content.$) ? item.media_content.$.url : null;
@@ -36,7 +53,7 @@ var NewsService = (function () {
                 return result;
             });
         }
-        else if (this.feed.feedType == 1 /* GoogleNews */) {
+        else if (body.feedType == 1 /* GoogleNews */) {
             return body.responseData.feed.entries
                 .map(function (item) {
                 return new newsitem_1.NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content);

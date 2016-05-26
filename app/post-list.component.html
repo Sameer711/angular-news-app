@@ -4,9 +4,9 @@
 <!--feedtype:<input type="text" [(ngModel)]="feedType">-->
 <div style="height:30px">
     
-    <span *ngFor="let feed of Feeds; let i=index">
+    <span *ngFor="let feed of AllFeeds; let i=index">
     <input id="feed{{index}}" type="checkbox"
-          value="{{feed.feedType}" name="chk{{i}}" class="feedSwitch" [(ngModel)]="feed.feedType == feedType" />{{feed.name}}
+          value="{{feed.feedType}" name="chk{{i}}" class="feedSwitch" [(ngModel)]="feed.isEnabled" />{{feed.name}}
     </span>
 </div>
 

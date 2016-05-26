@@ -23,17 +23,25 @@ export class PostListComponent implements OnInit, AfterViewInit, DoCheck {
    
    ngDoCheck() {
        
-       if (this.feedType != this.feed.feedType) {
-           console.log(this.feedType, this.feed.feedType);
-           this.feed = Feeds.Get(this.feedType);
-           console.log("feedtype changed to:" + this.feed.name);
+       if (this.feedsChanged()) {
+           console.log('feeds changed!');
+        //    console.log(this.feedType, this.feed.feedType);
+           this.feeds = Feeds.Get(this.selectedFeedTypes);
+        //    console.log("feedtype changed to:" + this.feed.name);
            this.getPosts();
        }
    }
+   
+   private feedsChanged() : boolean {
+       return this.feeds.every(feed=> this.selectedFeedTypes.findIndex(f=>f == feed.feedType)>-1);
+   }
 
-  Feeds = Feeds.feeds;
-  feedType = FeedType._680News;
-  private feed = Feeds.Get(FeedType._680News);
+  public AllFeeds = Feeds.feeds; //just for binding to UI
+  
+  //readwrite access
+  public selectedFeedTypes = [FeedType._680News];
+  
+  private feeds = Feeds.Get([FeedType._680News]);
   //feedTypeString = Util.FeedTypeToString(feedType);
   errorMessage: string;
   mode = 'Observable'; 
@@ -41,8 +49,13 @@ export class PostListComponent implements OnInit, AfterViewInit, DoCheck {
   
   constructor(private newsService: NewsService) {}
   getPosts() {
-      console.log("Get posts called for feed " + this.feed.name);
-      this.newsService.getPosts(this.feed)
+      if (this.feeds.length ==0) {
+        this.entries = [];          
+        return;
+      }
+        
+    //   console.log("Get posts called for feed " + this.feed.name);
+      this.newsService.getPosts(this.feeds)
         .subscribe(
             data => { this.entries = data },
             error => { console.log(error) } ,
@@ -50,7 +63,6 @@ export class PostListComponent implements OnInit, AfterViewInit, DoCheck {
        );            
   }
   
-    // TODO: Remove this when we're done
-  get FeedName() { return this.feed.name; }
+  get FeedNames() { return this.feeds.join(","); }
   
 }

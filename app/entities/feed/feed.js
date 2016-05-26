@@ -1,9 +1,10 @@
 "use strict";
 var Feed = (function () {
-    function Feed(name, serviceUrl, feedType) {
+    function Feed(name, serviceUrl, feedType, isEnabled) {
         this.name = name;
         this.serviceUrl = serviceUrl;
         this.feedType = feedType;
+        this.isEnabled = isEnabled;
     }
     return Feed;
 }());
@@ -16,13 +17,13 @@ var Feeds = (function () {
     //     Feeds.feeds.push(new Feed("Google News", "/feed/google-news", FeedType.GoogleNews));
     //     Feeds.feeds.push(new Feed("CBC News", "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews));
     // }    
-    Feeds.Get = function (feedType) {
-        return Feeds.feeds.find(function (feed) { return feed.feedType == feedType; });
+    Feeds.Get = function (filterList) {
+        return Feeds.feeds.filter(function (feed) { return filterList.findIndex(function (f) { return f == feed.feedType; }) > 0; });
     };
     Feeds.feeds = [
-        new Feed("680 News", "/feed/toJson?url=http://www.680news.com/feed/metrolinx/local/", 0 /* _680News */),
-        new Feed("Google News", "/feed/google-news", 1 /* GoogleNews */),
-        new Feed("CBC News", "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories", 2 /* CBCNews */)
+        new Feed("680 News", "/feed/toJson?url=http://www.680news.com/feed/metrolinx/local/", 0 /* _680News */, true),
+        new Feed("Google News", "/feed/google-news", 1 /* GoogleNews */, false),
+        new Feed("CBC News", "/feed/toJson?url=http://www.cbc.ca/cmlink/rss-topstories", 2 /* CBCNews */, false)
     ];
     return Feeds;
 }());

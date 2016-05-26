@@ -38,7 +38,7 @@ app.get('/feed/google-news', function(req, res, next) {
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       res.header('Content-Type', 'application/json');
-      // body.feedType =  FeedType.GoogleNews;
+      body.feedType =  FeedType.GoogleNews;
       res.send(body);
     }
   });

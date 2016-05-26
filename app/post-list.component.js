@@ -16,9 +16,10 @@ var feed_1 = require("./entities/feed/feed");
 var PostListComponent = (function () {
     function PostListComponent(newsService) {
         this.newsService = newsService;
-        this.Feeds = feed_1.Feeds.feeds;
-        this.feedType = 0 /* _680News */;
-        this.feed = feed_1.Feeds.Get(0 /* _680News */);
+        this.AllFeeds = feed_1.Feeds.feeds; //just for binding to UI
+        //readwrite access
+        this.selectedFeedTypes = [0 /* _680News */];
+        this.feeds = feed_1.Feeds.Get([0 /* _680News */]);
         this.mode = 'Observable';
     }
     PostListComponent.prototype.ngOnInit = function () {
@@ -28,22 +29,30 @@ var PostListComponent = (function () {
         //$(".feedSwitch").bootstrapSwitch();                   
     };
     PostListComponent.prototype.ngDoCheck = function () {
-        if (this.feedType != this.feed.feedType) {
-            console.log(this.feedType, this.feed.feedType);
-            this.feed = feed_1.Feeds.Get(this.feedType);
-            console.log("feedtype changed to:" + this.feed.name);
+        if (this.feedsChanged()) {
+            console.log('feeds changed!');
+            //    console.log(this.feedType, this.feed.feedType);
+            this.feeds = feed_1.Feeds.Get(this.selectedFeedTypes);
+            //    console.log("feedtype changed to:" + this.feed.name);
             this.getPosts();
         }
     };
+    PostListComponent.prototype.feedsChanged = function () {
+        var _this = this;
+        return this.feeds.every(function (feed) { return _this.selectedFeedTypes.findIndex(function (f) { return f == feed.feedType; }) > -1; });
+    };
     PostListComponent.prototype.getPosts = function () {
         var _this = this;
-        console.log("Get posts called for feed " + this.feed.name);
-        this.newsService.getPosts(this.feed)
+        if (this.feeds.length == 0) {
+            this.entries = [];
+            return;
+        }
+        //   console.log("Get posts called for feed " + this.feed.name);
+        this.newsService.getPosts(this.feeds)
             .subscribe(function (data) { _this.entries = data; }, function (error) { console.log(error); }, function () { return console.log('done'); });
     };
-    Object.defineProperty(PostListComponent.prototype, "FeedName", {
-        // TODO: Remove this when we're done
-        get: function () { return this.feed.name; },
+    Object.defineProperty(PostListComponent.prototype, "FeedNames", {
+        get: function () { return this.feeds.join(","); },
         enumerable: true,
         configurable: true
     });
