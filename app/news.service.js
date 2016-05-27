@@ -14,9 +14,10 @@ var Observable_1 = require('rxjs/Observable');
 var newsitem_1 = require('./entities/feed/newsitem');
 var feed_1 = require("./entities/feed/feed");
 require('rxjs/Rx');
-// import 'rxjs/observable/merge';
+// import './rxjs-operators';
+// import 'rxjs/add/operator/from';
 // import 'rxjs/observer';
-// import 'rxjs/operator/merge';
+// import 'rxjs/add/operator/forkJoin';
 var NewsService = (function () {
     function NewsService(http) {
         this.http = http;
@@ -28,34 +29,39 @@ var NewsService = (function () {
         if (feed_1.Feeds.enabledFeeds.length == 0) {
             return new Observable_1.Observable();
         }
-        var result;
-        feed_1.Feeds.enabledFeeds.forEach(function (feed) {
-            console.log("Calling httpget for ", feed.serviceUrl);
-            var thisCall = _this.http.get(feed.serviceUrl)
-                .take(3)
-                .map(_this.extractData, _this)
-                .catch(_this.handleError);
-            // console.log('merging result', result, thisCall);
-            if (typeof (result) == "undefined" || result == null) {
-                console.log("initial call..");
-                result = thisCall;
-            }
-            else {
-                console.log("merging..");
-                result.merge(thisCall);
-            }
-        });
+        // let result: Observable<NewsItem[]>;
+        var serviceUrls = feed_1.Feeds.enabledFeeds.map(function (f) { return f.serviceUrl; });
+        var result = Observable_1.Observable.forkJoin(serviceUrls.map(function (serviceUrl) { return _this.http.get(serviceUrl)
+            .map(_this.extractData, _this)
+            .catch(_this.handleError); }))
+            .map(function (t) { return t.concat.apply([], t); }); //flatten
+        // Feeds.enabledFeeds.forEach(feed => {
+        //     console.log("Calling httpget for " ,feed.serviceUrl);
+        //     var thisCall = this.http.get(feed.serviceUrl)
+        //         .map(this.extractData, this)
+        //         // .take(3)
+        //         .catch(this.handleError);
+        //     // console.log('merging result', result, thisCall);
+        //     if (typeof(result) == "undefined" || result == null) {
+        //       console.log("initial call..");
+        //       result = thisCall;
+        //     }
+        //     else {
+        //         console.log("merging..");
+        //         result.merge(thisCall);
+        //     }
+        // });
         //get each of the results and join them.
         // var result = this.http.get(Feeds.enabledFeeds[0].serviceUrl)
         // .map(this.extractData, this)
         // .catch(this.handleError);
-        // console.log("REsult:", result);
+        console.log("Result:", result);
         return result;
     };
     NewsService.prototype.extractData = function (res) {
         var body = res.json();
         // console.log('extractData called on ' + this.feed.name);
-        if (body.feedType == 0 /* _680News */) {
+        if (body.feedType == 1 /* _680News */ || body.feedType == 0 /* _680NewsLocal */) {
             return body.rss.channel.item
                 .map(function (item) {
                 var img = (item && item.media_content && item.media_content.$) ? item.media_content.$.url : null;
@@ -64,7 +70,7 @@ var NewsService = (function () {
                 return result;
             });
         }
-        else if (body.feedType == 1 /* GoogleNews */) {
+        else if (body.feedType == 2 /* GoogleNews */) {
             return body.responseData.feed.entries
                 .map(function (item) {
                 var result = new newsitem_1.NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content, body.feedType);
