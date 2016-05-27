@@ -21,10 +21,11 @@ export class Feed {
 export class Feeds {
     
     static feeds = [
-        new Feed("680 News Local (with images)", "/feed/toJson?feedType=" + FeedType._680NewsLocal +"&url=http://www.680news.com/feed/metrolinx/local/", FeedType._680NewsLocal, false),
-        new Feed("680 News All", "/feed/toJson?feedType=" + FeedType._680News +"&url=http://www.680news.com/feed/", FeedType._680News, false),
-        new Feed("Google News", "/feed/google-news", FeedType.GoogleNews, true),
-        new Feed("CBC News", "/feed/toJson?feedType=" + FeedType.CBCNews + "&url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews, false)
+        new Feed("680 News Local", "/feed/toJson?feedType=" + FeedType._680NewsLocal +"&url=http://www.680news.com/feed/metrolinx/local/",
+         FeedType._680NewsLocal, false),
+        // new Feed("680 News All", "/feed/toJson?feedType=" + FeedType._680News +"&url=http://www.680news.com/feed/", FeedType._680News, false),
+        new Feed("Google News", "/feed/google-news", FeedType.GoogleNews, false),
+        new Feed("CBC News", "/feed/toJson?feedType=" + FeedType.CBCNews + "&url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews, true)
     ];
     
     public static get enabledFeeds() : Feed[] {

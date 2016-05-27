@@ -23,10 +23,10 @@ var Feeds = (function () {
         return Feeds.feeds.filter(function (feed) { return filterList.findIndex(function (f) { return f == feed.feedType; }) > -1; });
     };
     Feeds.feeds = [
-        new Feed("680 News Local (with images)", "/feed/toJson?feedType=" + 0 /* _680NewsLocal */ + "&url=http://www.680news.com/feed/metrolinx/local/", 0 /* _680NewsLocal */, false),
-        new Feed("680 News All", "/feed/toJson?feedType=" + 1 /* _680News */ + "&url=http://www.680news.com/feed/", 1 /* _680News */, false),
-        new Feed("Google News", "/feed/google-news", 2 /* GoogleNews */, true),
-        new Feed("CBC News", "/feed/toJson?feedType=" + 3 /* CBCNews */ + "&url=http://www.cbc.ca/cmlink/rss-topstories", 3 /* CBCNews */, false)
+        new Feed("680 News Local", "/feed/toJson?feedType=" + 0 /* _680NewsLocal */ + "&url=http://www.680news.com/feed/metrolinx/local/", 0 /* _680NewsLocal */, false),
+        // new Feed("680 News All", "/feed/toJson?feedType=" + FeedType._680News +"&url=http://www.680news.com/feed/", FeedType._680News, false),
+        new Feed("Google News", "/feed/google-news", 2 /* GoogleNews */, false),
+        new Feed("CBC News", "/feed/toJson?feedType=" + 3 /* CBCNews */ + "&url=http://www.cbc.ca/cmlink/rss-topstories", 3 /* CBCNews */, true)
     ];
     return Feeds;
 }());

@@ -12,6 +12,8 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 //main app - completely static 
 app.use('/app', express.static(__dirname + '/app'));
 app.use('/lib', express.static(__dirname + '/lib'));
+app.use('/css', express.static(__dirname + '/app/css'));
+app.use('/images', express.static(__dirname + '/app/images'));
 app.get('/systemjs.config.js', function (req, res, next) {
     res.sendFile('systemjs.config.js', { root: __dirname });
 });
@@ -65,6 +67,24 @@ function xmlFeedToJson(url) {
         });
     });
 }
+// //cbc
+// app.get('/feed/cbc-news', function(req, res, next) {
+//   request(
+//     {
+//       uri: url,
+//       method: 'GET',
+//       json: true
+//     }, function (error, response, body) {
+//     if (!error && response.statusCode == 200) {
+//       res.header('Content-Type', 'application/json');      
+//       body.feedType =  FeedType.CBCNews;
+//       var htmlparser = require("htmlparser2");
+//       var dom = htmlparser.parseDOM(item.description);
+//       console.log(dom);
+//       res.send(body);
+//     }
+//   });
+// });
 //Read an xml feed and return as JSON
 app.get('/feed/toJson', function (req, res, next) {
     var url = req.query.url;

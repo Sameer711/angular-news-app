@@ -33,8 +33,6 @@ export class NewsItem
         else 
             this.categories = categories;
         this.fullDescription = fullDescription;
-        this.feedType = feedType;
-            
-       
+        this.feedType = feedType;                    
     }
 }

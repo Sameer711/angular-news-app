@@ -1,0 +1,8 @@
+.row {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.newsSnippet {
+    margin-top: 10px;
+}

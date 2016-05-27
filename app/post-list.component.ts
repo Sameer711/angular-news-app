@@ -34,11 +34,13 @@ export class PostListComponent implements OnInit, AfterViewInit {
       
    private dirtyCheckAndUpdate() : void {
         if (this.feedsChanged()) {
+           this.entries = [];
            console.log('feeds changed!');
         //    console.log(this.feedType, this.feed.feedType);
            this.oldFeeds = Feeds.enabledFeeds;
             console.log("feedtype changed to:" + this.FeedNames);
            this.getPosts();
+           
        }
    }
    private feedsChanged() : boolean {
@@ -75,6 +77,6 @@ export class PostListComponent implements OnInit, AfterViewInit {
        );            
   }
   
-  get FeedNames() : string { return Feeds.enabledFeeds.map(f=>f.name).join(","); }
+  get FeedNames() : string { return Feeds.enabledFeeds.map(f=>f.name).join(" & "); }
   
 }

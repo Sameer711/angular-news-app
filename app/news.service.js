@@ -35,36 +35,17 @@ var NewsService = (function () {
             .map(_this.extractData, _this)
             .catch(_this.handleError); }))
             .map(function (t) { return t.concat.apply([], t); }); //flatten
-        // Feeds.enabledFeeds.forEach(feed => {
-        //     console.log("Calling httpget for " ,feed.serviceUrl);
-        //     var thisCall = this.http.get(feed.serviceUrl)
-        //         .map(this.extractData, this)
-        //         // .take(3)
-        //         .catch(this.handleError);
-        //     // console.log('merging result', result, thisCall);
-        //     if (typeof(result) == "undefined" || result == null) {
-        //       console.log("initial call..");
-        //       result = thisCall;
-        //     }
-        //     else {
-        //         console.log("merging..");
-        //         result.merge(thisCall);
-        //     }
-        // });
-        //get each of the results and join them.
-        // var result = this.http.get(Feeds.enabledFeeds[0].serviceUrl)
-        // .map(this.extractData, this)
-        // .catch(this.handleError);
-        console.log("Result:", result);
+        // console.log("Result:", result);
         return result;
     };
     NewsService.prototype.extractData = function (res) {
+        //TODO: Can make this strategy pattern
         var body = res.json();
         // console.log('extractData called on ' + this.feed.name);
         if (body.feedType == 1 /* _680News */ || body.feedType == 0 /* _680NewsLocal */) {
             return body.rss.channel.item
                 .map(function (item) {
-                var img = (item && item.media_content && item.media_content.$) ? item.media_content.$.url : null;
+                var img = (item && item.media_content && item.media_content.$) ? item.media_content.$.url : "/images/680-news.png";
                 var result = new newsitem_1.NewsItem(item.title, item.link, img, null, null, item.description, item.category, item.content_encoded, body.feedType);
                 // console.dir(result);
                 return result;
@@ -73,7 +54,18 @@ var NewsService = (function () {
         else if (body.feedType == 2 /* GoogleNews */) {
             return body.responseData.feed.entries
                 .map(function (item) {
-                var result = new newsitem_1.NewsItem(item.title, item.link, null, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content, body.feedType);
+                var img = "/images/google-news.png";
+                var result = new newsitem_1.NewsItem(item.title, item.link, img, item.author, item.publishedDate, item.contentSnippet, item.categories, item.content, body.feedType);
+                return result;
+            });
+        }
+        else if (body.feedType == 3 /* CBCNews */) {
+            return body.rss.channel.item
+                .map(function (item) {
+                var contentNoImages = item.description.replace(/<img[^>]*>/g, "");
+                var imgRaw = item.description.substring(0, item.description.indexOf(contentNoImages));
+                var img = $(imgRaw).attr('src');
+                var result = new newsitem_1.NewsItem(item.title, item.link, img, item.author, item.pubDate, contentNoImages, item.category, null, body.feedType);
                 return result;
             });
         }

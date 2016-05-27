@@ -36,6 +36,7 @@ var PostListComponent = (function () {
     };
     PostListComponent.prototype.dirtyCheckAndUpdate = function () {
         if (this.feedsChanged()) {
+            this.entries = [];
             console.log('feeds changed!');
             //    console.log(this.feedType, this.feed.feedType);
             this.oldFeeds = feed_1.Feeds.enabledFeeds;
@@ -64,7 +65,7 @@ var PostListComponent = (function () {
         }, function (error) { console.log(error); }, function () { return console.log('news service call done'); });
     };
     Object.defineProperty(PostListComponent.prototype, "FeedNames", {
-        get: function () { return feed_1.Feeds.enabledFeeds.map(function (f) { return f.name; }).join(","); },
+        get: function () { return feed_1.Feeds.enabledFeeds.map(function (f) { return f.name; }).join(" & "); },
         enumerable: true,
         configurable: true
     });
