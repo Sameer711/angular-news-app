@@ -5,12 +5,11 @@ import { Entry } from './entities';
 import { NewsItem } from './entities/feed/newsitem';
 import {Feed, Feeds, FeedType} from "./entities/feed/feed";
 
- import 'rxjs/Rx';
-// import './rxjs-operators';
-// import 'rxjs/add/operator/from';
-// import 'rxjs/observer';
-// import 'rxjs/add/operator/forkJoin';
-
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/forkJoin';
 
 @Injectable()
 export class NewsService {

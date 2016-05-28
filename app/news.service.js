@@ -13,11 +13,11 @@ var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 var newsitem_1 = require('./entities/feed/newsitem');
 var feed_1 = require("./entities/feed/feed");
-require('rxjs/Rx');
-// import './rxjs-operators';
-// import 'rxjs/add/operator/from';
-// import 'rxjs/observer';
-// import 'rxjs/add/operator/forkJoin';
+require('rxjs/add/observable/throw');
+require('rxjs/add/operator/catch');
+require('rxjs/add/operator/map');
+require('rxjs/add/operator/switchMap');
+require('rxjs/add/observable/forkJoin');
 var NewsService = (function () {
     function NewsService(http) {
         this.http = http;

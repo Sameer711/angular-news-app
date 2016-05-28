@@ -9,7 +9,7 @@ Pick your feed sources:
           value="{{feed.feedType}}" name="chk{{i}}" class="feedSwitch" [(ngModel)]="feed.isEnabled" />{{feed.name}}
     </label>
 </div>
-<h2 *ngIf="FeedNames"><small>Loading news from {{FeedNames}}</small></h2>
+<h2 *ngIf="FeedNames"><small>Showing news from {{FeedNames}}</small></h2>
 
 <div class="container">
     <template ngFor let-post [ngForOf]="entries">
