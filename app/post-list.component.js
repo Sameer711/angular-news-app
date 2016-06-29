@@ -19,6 +19,7 @@ var PostListComponent = (function () {
         this.newsService = newsService;
         this.AllFeeds = feed_1.Feeds.feeds; //just for binding to UI need a local instance.
         this.oldFeeds = feed_1.Feeds.enabledFeeds;
+        this.LastUpdated = new Date();
         this.mode = 'Observable';
     }
     PostListComponent.prototype.ngOnInit = function () {
@@ -41,6 +42,7 @@ var PostListComponent = (function () {
             //    console.log(this.feedType, this.feed.feedType);
             this.oldFeeds = feed_1.Feeds.enabledFeeds;
             console.log("feedtype changed to:" + this.FeedNames);
+            this.unsubscribe();
             this.getPosts();
         }
     };
@@ -50,6 +52,9 @@ var PostListComponent = (function () {
         console.log("oldfeeds", this.oldFeeds, "enabledFeeds:", enabledFeeds, "feeds changed:", result);
         return result;
     };
+    PostListComponent.prototype.unsubscribe = function () {
+        this.subscription.unsubscribe();
+    };
     PostListComponent.prototype.getPosts = function () {
         var _this = this;
         if (feed_1.Feeds.enabledFeeds.length == 0) {
@@ -58,10 +63,11 @@ var PostListComponent = (function () {
             return;
         }
         //   console.log("Get posts called for feed " + this.feed.name);
-        this.newsService.getPosts()
+        this.subscription = this.newsService.getPosts()
             .subscribe(function (data) {
             console.log("newsService data=", data);
             _this.entries = data;
+            _this.LastUpdated = new Date();
         }, function (error) { console.log(error); }, function () { return console.log('news service call done'); });
     };
     Object.defineProperty(PostListComponent.prototype, "FeedNames", {

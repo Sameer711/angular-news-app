@@ -18,6 +18,14 @@ require('rxjs/add/operator/catch');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/switchMap');
 require('rxjs/add/observable/forkJoin');
+require('rxjs/add/observable/interval');
+require('rxjs/add/operator/startWith');
+// import 'rxjs/add/observable/timer';
+// import 'rxjs/add/operator/timeInterval';
+// import 'rxjs/add/operator/throttle';
+require('rxjs/add/operator/delay');
+require('rxjs/add/operator/bufferTime');
+require('rxjs/add/operator/skip');
 var NewsService = (function () {
     function NewsService(http) {
         this.http = http;
@@ -31,10 +39,13 @@ var NewsService = (function () {
         }
         // let result: Observable<NewsItem[]>;
         var serviceUrls = feed_1.Feeds.enabledFeeds.map(function (f) { return f.serviceUrl; });
-        var result = Observable_1.Observable.forkJoin(serviceUrls.map(function (serviceUrl) { return _this.http.get(serviceUrl)
+        //startWith makes it fire immediately
+        var result = Observable_1.Observable.interval(30000).startWith(-1).switchMap(function () { return Observable_1.Observable.forkJoin(serviceUrls.map(function (serviceUrl) { return _this.http.get(serviceUrl)
             .map(_this.extractData, _this)
             .catch(_this.handleError); }))
-            .map(function (t) { return t.concat.apply([], t); }); //flatten
+            .map(function (t) { return t.concat.apply([], t); }); } //flatten
+         //flatten
+        );
         // console.log("Result:", result);
         return result;
     };
@@ -70,7 +81,6 @@ var NewsService = (function () {
             });
         }
         throw new Error("Unhandled feed type");
-        //cbc news
     };
     NewsService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure

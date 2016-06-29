@@ -10,6 +10,14 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/startWith';
+// import 'rxjs/add/observable/timer';
+// import 'rxjs/add/operator/timeInterval';
+// import 'rxjs/add/operator/throttle';
+import 'rxjs/add/operator/delay';
+ import 'rxjs/add/operator/bufferTime';
+ import 'rxjs/add/operator/skip';
 
 @Injectable()
 export class NewsService {
@@ -26,13 +34,17 @@ export class NewsService {
         // let result: Observable<NewsItem[]>;
         
         let serviceUrls = Feeds.enabledFeeds.map(f=> f.serviceUrl);
-        let result = Observable.forkJoin<NewsItem[]>(            
+        //startWith makes it fire immediately
+        let result = Observable.interval(30000).startWith(-1).switchMap(
+            
+            () => Observable.forkJoin<NewsItem[]>(            
             serviceUrls.map(
                 serviceUrl => this.http.get(serviceUrl)
                 .map(this.extractData, this)
                 .catch(this.handleError)               
-        ))
-        .map(t=> t.concat.apply([], t)); //flatten
+            ))
+            .map(t=> t.concat.apply([], t)) //flatten
+        ); 
            
         // console.log("Result:", result);
         return result;
@@ -72,7 +84,6 @@ export class NewsService {
             });
         }
         throw new Error("Unhandled feed type");
-        //cbc news
         
     }
     

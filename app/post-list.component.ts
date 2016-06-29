@@ -5,6 +5,7 @@ import { NewsItem } from "./entities/feed/newsitem";
 import { ArrayFixPipe } from "./ngfor-array-fix.pipe";
 import {Feed, Feeds, FeedType} from "./entities/feed/feed";
 import "./Array.equals";
+import { Subscription }  from 'rxjs/Subscription';
 
 @Component({
     selector: 'post-list',  
@@ -39,6 +40,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
         //    console.log(this.feedType, this.feed.feedType);
            this.oldFeeds = Feeds.enabledFeeds;
             console.log("feedtype changed to:" + this.FeedNames);
+           this.unsubscribe();
            this.getPosts();
            
        }
@@ -52,12 +54,17 @@ export class PostListComponent implements OnInit, AfterViewInit {
 
   public AllFeeds = Feeds.feeds; //just for binding to UI need a local instance.
   private oldFeeds = Feeds.enabledFeeds;  
+  public LastUpdated = new Date();
   //feedTypeString = Util.FeedTypeToString(feedType);
   errorMessage: string;
   mode = 'Observable'; 
   entries: NewsItem[];
+  subscription: Subscription;
   
   constructor(private newsService: NewsService) {}
+  unsubscribe() {
+      this.subscription.unsubscribe();
+  }
   getPosts() {
       if (Feeds.enabledFeeds.length ==0) {
         console.warn('No feeds enabled');
@@ -66,11 +73,12 @@ export class PostListComponent implements OnInit, AfterViewInit {
       }
         
     //   console.log("Get posts called for feed " + this.feed.name);
-      this.newsService.getPosts()
+      this.subscription = this.newsService.getPosts()
         .subscribe(
             data => {
                 console.log("newsService data=",data); 
                 this.entries = data;
+                this.LastUpdated = new Date();
             },
             error => { console.log(error) } ,
             () => console.log('news service call done')
