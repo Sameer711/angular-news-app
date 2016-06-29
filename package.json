@@ -66,6 +66,8 @@
     "nodemon": "^1.9.2",
     "protractor": "^3.3.0",
     "rimraf": "^2.5.2",
+    "semantic-ui-item": "^2.2.1",
+    "semantic-ui-label": "^2.2.1",
     "tslint": "^3.7.4",
     "typescript": "^1.8.10",
     "typings": "^0.8.1"

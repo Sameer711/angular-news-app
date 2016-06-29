@@ -12,21 +12,23 @@ Pick your feed sources:
 <h2 *ngIf="FeedNames"><small>Showing news from {{FeedNames}}</small></h2>
 <h3 *ngIf="FeedNames"><small>Last updated at:  {{LastUpdated| date:"h:mma:ss"}}</small></h3>
 
-<div class="container">
+<div class="ui items">
     <template ngFor let-post [ngForOf]="entries">
-        <div class="row">
-            <div class="col-md-12">
-                    <h3><a *ngIf="post.link" href="{{post.link}}" target="blank">{{ post.title }}</a></h3>        
-                    <!--<span *ngIf="post.categories" *ngFor="let cat of post.categories; let i=index" class="btn btn-info category">{{i}} {{cat}}</span>            -->
-                    <!--<span class="btn btn-info category">{{post.feedType}}</span>                    -->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
+        <div class="item">
+            <div class="image">
                 <img src="{{post.imageUrl}}" class="img-responsive" />
             </div>
-            <div [innerHtml]="post.description" class="col-md-8 newsSnippet">                        
-            </div>     
+            <div class="content">
+                <a class="header" *ngIf="post.link" href="{{post.link}}" target="blank">{{ post.title }}</a>        
+                <div [innerHtml]="post.description" class="description">                        
+                </div>     
+                <div class="extra">
+                        <!--<span *ngIf="post.categories" *ngFor="let cat of post.categories; let i=index" class="btn btn-info category">{{i}} {{cat}}</span>            -->
+                        <!--<span class="btn btn-info category">{{post.feedType}}</span>                    -->
+                        <div class="ui label" *ngIf="post.categories" *ngFor="let cat of post.categories; let i=index"><span *ngIf="cat">{{cat}}</span></div>
+                </div>
+            </div>
+
         </div>
     </template>
 </div>
