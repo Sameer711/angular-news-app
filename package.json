@@ -10,6 +10,7 @@
     "e2e": "tsc && concurrently \"http-server\" \"protractor protractor.config.js\"",
     "lint": "tslint ./app/**/*.ts -t verbose",
     "lite": "lite-server",
+    "preinstall": "npm i rxjs@5.0.0-beta.6",
     "postinstall": "",
     "test": "tsc && concurrently \"tsc -w\" \"karma start karma.conf.js\"",
     "tsc": "tsc",
