@@ -10,7 +10,7 @@ Pick your feed sources:
     </label>
 </div>
 <h2 *ngIf="FeedNames"><small>Showing news from {{FeedNames}}</small></h2>
-<h3 *ngIf="FeedNames"><small>Last updated at:  {{LastUpdated| date:"h:mma:ss"}}</small></h3>
+<h3 *ngIf="FeedNames"><small>Last updated at:  {{LastUpdated| date:"h:mm:ss a"}}</small></h3>
 
 <div class="ui items">
     <template ngFor let-post [ngForOf]="entries">

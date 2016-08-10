@@ -5,7 +5,7 @@ var Promise = require('promise');
 var parseString = require('xml2js').parseString;
 import { FeedType } from "./app/entities/feed/feed";
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 6001));
 
 //main app - completely static 
 // app.use(express.static(__dirname + '/app'));

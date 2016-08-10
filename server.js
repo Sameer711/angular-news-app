@@ -4,7 +4,7 @@ var app = express();
 var request = require('request');
 var Promise = require('promise');
 var parseString = require('xml2js').parseString;
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 6001));
 //main app - completely static 
 // app.use(express.static(__dirname + '/app'));
 //modules for use in the app (ie angular,etc)

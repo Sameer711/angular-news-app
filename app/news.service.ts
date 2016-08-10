@@ -83,6 +83,13 @@ export class NewsService {
                 return result;
             });
         }
+        else if (body.feedType == FeedType.ReutersTopNews) {
+            return body.rss.channel.item
+            .map(function (item) {
+                var img = "/images/reuters125.png";
+                return new NewsItem(item.title, item.link, img, null, item.pubDate, item.description, item.category, null, body.feedType);
+            });
+        }
         throw new Error("Unhandled feed type");
         
     }

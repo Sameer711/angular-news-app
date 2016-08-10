@@ -26,7 +26,8 @@ var Feeds = (function () {
         new Feed("680 News Local", "/feed/toJson?feedType=" + 0 /* _680NewsLocal */ + "&url=http://www.680news.com/feed/metrolinx/local/", 0 /* _680NewsLocal */, false),
         // new Feed("680 News All", "/feed/toJson?feedType=" + FeedType._680News +"&url=http://www.680news.com/feed/", FeedType._680News, false),
         new Feed("Google News", "/feed/google-news", 2 /* GoogleNews */, false),
-        new Feed("CBC News", "/feed/toJson?feedType=" + 3 /* CBCNews */ + "&url=http://www.cbc.ca/cmlink/rss-topstories", 3 /* CBCNews */, true)
+        new Feed("CBC News", "/feed/toJson?feedType=" + 3 /* CBCNews */ + "&url=http://www.cbc.ca/cmlink/rss-topstories", 3 /* CBCNews */, true),
+        new Feed("Reuters Top Stories", "/feed/toJson?feedType=" + 4 /* ReutersTopNews */ + "&url=http://feeds.reuters.com/reuters/topNews", 4 /* ReutersTopNews */, false)
     ];
     return Feeds;
 }());

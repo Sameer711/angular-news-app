@@ -80,6 +80,13 @@ var NewsService = (function () {
                 return result;
             });
         }
+        else if (body.feedType == 4 /* ReutersTopNews */) {
+            return body.rss.channel.item
+                .map(function (item) {
+                var img = "/images/reuters125.png";
+                return new newsitem_1.NewsItem(item.title, item.link, img, null, item.pubDate, item.description, item.category, null, body.feedType);
+            });
+        }
         throw new Error("Unhandled feed type");
     };
     NewsService.prototype.handleError = function (error) {

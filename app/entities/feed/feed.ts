@@ -2,7 +2,8 @@
       _680NewsLocal,
       _680News,
       GoogleNews,
-      CBCNews
+      CBCNews,
+      ReutersTopNews
   }
 
 export class Feed {
@@ -25,7 +26,8 @@ export class Feeds {
          FeedType._680NewsLocal, false),
         // new Feed("680 News All", "/feed/toJson?feedType=" + FeedType._680News +"&url=http://www.680news.com/feed/", FeedType._680News, false),
         new Feed("Google News", "/feed/google-news", FeedType.GoogleNews, false),
-        new Feed("CBC News", "/feed/toJson?feedType=" + FeedType.CBCNews + "&url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews, true)
+        new Feed("CBC News", "/feed/toJson?feedType=" + FeedType.CBCNews + "&url=http://www.cbc.ca/cmlink/rss-topstories", FeedType.CBCNews, true),
+        new Feed("Reuters Top Stories", "/feed/toJson?feedType=" + FeedType.ReutersTopNews + "&url=http://feeds.reuters.com/reuters/topNews", FeedType.ReutersTopNews, false)
     ];
     
     public static get enabledFeeds() : Feed[] {
