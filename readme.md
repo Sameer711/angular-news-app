@@ -5,7 +5,3 @@ The news articles come from Google News API / 680 News / CBC News read via a Nod
 They are rendered using Angular.
 
 See it live at <a href="http://angular-news-app.herokuapp.com/">Heroku</a>
-
-<a href="http://www.linkedi.com/in/sameeralibhai">Sameer Alibhai</a>
-
-    
