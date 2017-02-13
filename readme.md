@@ -6,6 +6,5 @@ They are rendered using Angular.
 
 See it live at <a href="http://angular-news-app.herokuapp.com/">Heroku</a>
 
-<a href="http://www.linkedi.com/in/sameeralibhai">Sameer Alibhai</a>
 
     
